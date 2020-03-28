@@ -9,10 +9,11 @@ namespace HuellaDactilar.Controller
     class clsData
     {
         //Conexion global
-        // private string conn = "Server=192.168.2.13;User Id=postgres;" +
-        // "Password=*cmi*;Database=grehu_eti;";
-        private string conn = "Server=localhost;User Id=postgres;" +
-                                   "Password=postgres;Database=grehu_eti;";
+        private string conn = "Server=192.168.2.13;User Id=postgres;" +
+        "Password=*cmi*;Database=grehu_eti;";
+
+       /* private string conn = "Server=localhost;User Id=postgres;" +
+                                    "Password=postgres;Database=grehu_eti;";*/
         public bool insertData(Int64 idPersona, string numTargeta, string huellas, string nombre, string apellidos, string permiso)
         {
             Int64 cantDatos = 0;
@@ -93,8 +94,6 @@ namespace HuellaDactilar.Controller
 
         public bool eliminarHuella(string num_tarjeta, string huellas)
         {
-            //string[] huellas = getHuellas(num_tarjeta);
-            //huellas[index] = string.Empty;
             try
             {
                 NpgsqlConnection update = new NpgsqlConnection(conn);
@@ -136,37 +135,7 @@ namespace HuellaDactilar.Controller
                 return null;
             }
         }
-        public string[,] getRelojes()
-        {
-            string connAsistencia = "Server=localhost;User Id=postgres;" +
-                                       "Password=postgres;Database=asistencia;";
-            string[,] relojes;
-            try
-            {
-                NpgsqlConnection myconn = new NpgsqlConnection(connAsistencia);
-                myconn.Open();
-                string data = "SELECT r.ip, r.lugar FROM reloj.relojes r WHERE r.active = @activo";
-                NpgsqlCommand command = new NpgsqlCommand(data, myconn);
-                command.Parameters.AddWithValue("@activo", true);
-                NpgsqlDataReader reader = command.ExecuteReader();
-                int rows = 0;
-                relojes = new string[byte.MaxValue, 2];
-                while (reader.Read())
-                {
-                    relojes[rows, 0] = reader.GetValue(0).ToString();
-                    relojes[rows, 1] = reader.GetValue(1).ToString();
-                    rows++;
 
-                }
-
-                return relojes;
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.ToString());
-                return null;
-            }
-        }
         public bool update(string idPersona, DateTime fecha, DateTime hora, string ipReloj)
         {
             Int64 id = 0;
@@ -250,8 +219,6 @@ namespace HuellaDactilar.Controller
                             u.Permiso = Permiso.UsuarioAdministrador;
                         }
                     }
-
-
                     users.Add(u);
                 }
                 return users;

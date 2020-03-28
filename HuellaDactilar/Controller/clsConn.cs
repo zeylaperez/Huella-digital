@@ -11,63 +11,106 @@ namespace HuellaDactilar.Controller
 {
     class clsConn
     {
+        //Conexion global
+        string sql = "Server=192.168.2.13;User Id=postgres;" +
+                 "Password=*cmi*;Database=asistencia;";
+        string dominio = "eti.biocubafarma.cu";
+        string path = "LDAP://eti.biocubafarma.cu";
+
+        /* string sql = "Server=localhost;User Id=postgres;" +
+           "Password=postgres;Database=asistencia;";*/
 
         public string login(string user, string psw)
         {
-            //  string sql = "Server=192.168.2.13;User Id=postgres;" +
-            //  "Password=*cmi*;Database=asistencia;";
-            //string dominio = "eti.biocubafarma.cu";
-            // string path = "LDAP://eti.biocubafarma.cu";
+            try
+            {
+                NpgsqlConnection conn = new NpgsqlConnection(sql);
+                conn.Open();
+            //Define a query
+              string cred = "SELECT us.username FROM auth.users us WHERE us.username = @user " +
+                    " LIMIT 1";
+               NpgsqlCommand cmd = new NpgsqlCommand(cred, conn);
+               cmd.Parameters.AddWithValue("@user", user);
+               // Execute a query
+               NpgsqlDataReader rCred = cmd.ExecuteReader();
+               if (rCred.Read())
+               {
+                   DirectoryEntry entry = new DirectoryEntry(path, user + "@" + dominio, psw);
+                   try
+                   {
+                       DirectorySearcher search = new DirectorySearcher(entry);
+                       SearchResult result = search.FindOne();
+                       if (result == null)
+                       {
+                           return "t";
+                       }
+                       else
+                       {
+                           conn.Close();
+                           return "t";
+                       }
+                   }
+                   catch
+                   {
+                       return "f";
+                   }
+               }
+               else { conn.Close(); return "f"; }
+           }
+           catch (NpgsqlException e)
+           {
+               MessageBox.Show(e.Message);
+               return "f";
+           }
+        }
 
-            string sql = "Server=localhost;User Id=postgres;" +
-              "Password=postgres;Database=asistencia;";
-            
-            NpgsqlConnection conn = new NpgsqlConnection(sql);
-            conn.Open();
-            return "t";
-            /* try
-             {
-                 NpgsqlConnection conn = new NpgsqlConnection(sql);
-                 conn.Open();
-                 // Define a query
-                 string cred = "SELECT us.username FROM auth.users us WHERE us.username = @user " +
-                     " LIMIT 1";
-                 NpgsqlCommand cmd = new NpgsqlCommand(cred, conn);
-                 cmd.Parameters.AddWithValue("@user",user);
-                 // Execute a query
-                 NpgsqlDataReader rCred = cmd.ExecuteReader();
-                 if (rCred.Read())
-                 {
-                     DirectoryEntry entry = new DirectoryEntry(path, user + "@" + dominio, psw);
-                     try
-                     {
-                         DirectorySearcher search = new DirectorySearcher(entry);
-                         SearchResult result = search.FindOne();
-                         if (result == null)
-                         {
-                             return "t";
-                         }
-                         else
-                         {
-                             conn.Close();
-                             return "t";
-                         }
-                     }
-                     catch {
-                         return "f";
-                     }
+        public string[,] getRelojes()
+        {
+            string[,] relojes;
+            try
+            {
+                NpgsqlConnection myconn = new NpgsqlConnection(sql);
+                myconn.Open();
+                string data = "SELECT r.ip, r.lugar FROM reloj.relojes r WHERE r.active = @activo";
+                NpgsqlCommand command = new NpgsqlCommand(data, myconn);
+                command.Parameters.AddWithValue("@activo", true);
+                NpgsqlDataReader reader = command.ExecuteReader();
+                int rows = 0;
+                relojes = new string[byte.MaxValue, 2];
+                while (reader.Read())
+                {
+                    relojes[rows, 0] = reader.GetValue(0).ToString();
+                    relojes[rows, 1] = reader.GetValue(1).ToString();
+                    rows++;
+                }
+                return relojes;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                return null;
+            }
+        }
 
-                 }
-                 else { conn.Close(); return "f"; }
-
-             }
-             catch (NpgsqlException e)
-             {
-                 MessageBox.Show(e.Message);
-                 return "f";
-             }
-
-     */
+        public bool checkPermiso(string user)
+        {
+            try
+            {
+                NpgsqlConnection myconn = new NpgsqlConnection(sql);
+                myconn.Open();
+                string data = "select u.name, u.iduser from auth.users u, auth.users_roles ur" +
+                    " where u.username=@user and u.iduser=ur.iduser and ur.idrole=33";
+                NpgsqlCommand command = new NpgsqlCommand(data, myconn);
+                command.Parameters.AddWithValue("@user", user);
+                NpgsqlDataReader reader = command.ExecuteReader();
+                myconn.Close();
+                return true;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                return false;
+            }
         }
     }
 }

@@ -16,20 +16,38 @@ namespace HuellaDactilar
             if (txt_usuario.Text != "" && txt_pass.Text != "")
             {
                 clsConn cls = new clsConn();
-                if (cls.login(txt_usuario.Text,txt_pass.Text) == "t")
+                if (cls.login(txt_usuario.Text, txt_pass.Text) == "t")
                 {
+                   /* if (!cls.checkPermiso(txt_usuario.Text))
+                    {
+                        MessageBox.Show("El usuario " + txt_usuario.Text + " no tiene permisos para acceder al sistema.", "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        clean();
+                    }*/
                     GestionarHuella gHuella = new GestionarHuella(false, 0);
                     gHuella.Show();
                     this.Hide();
-                
                 }
                 else if (cls.login(txt_usuario.Text, txt_pass.Text) == "f")
-                    MessageBox.Show("Credenciales incorrectas", "Error",
+                {
+                    MessageBox.Show("Credenciales incorrectas.", "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    clean();
+                }
                 else
-                    MessageBox.Show("La base de datos está desconectada", "Alerta",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                {
+                    MessageBox.Show("La base de datos está desconectada.", "Alerta",
+                                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    clean();
+                }
             }
+        }
+
+
+        public void clean()
+        {
+            txt_usuario.Text = "";
+            txt_pass.Text = "";
         }
 
         private void grp_auth_Enter(object sender, EventArgs e)
@@ -61,6 +79,11 @@ namespace HuellaDactilar
         private void Index_FormClosing(object sender, FormClosingEventArgs e)
         {
             Application.ExitThread();
+        }
+
+        private void Txt_usuario_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

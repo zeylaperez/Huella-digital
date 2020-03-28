@@ -24,11 +24,11 @@ namespace HuellaDactilar
         private void Relojes_Load(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
-            clsData clsData = new clsData();
+            clsConn clsConn = new clsConn();
             DataTable table = new DataTable();
             table.Columns.Add("IP", typeof(string));
             table.Columns.Add("LUGAR", typeof(string));
-            relojes = clsData.getRelojes();
+            relojes = clsConn.getRelojes();
             int i = 0;
             while (relojes[i, 0] != null)
             {
@@ -54,13 +54,14 @@ namespace HuellaDactilar
                 while (relojes[j, 0] != null)
                 {
                     if (!dispositivo.DispositivoConectar(relojes[j, 0], 1, false))
-                        MessageBox.Show("Error al conectarse al reloj", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Error al conectarse al reloj "+ relojes[j, 0], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     else
                     {
+                        //usuarios en la BD
                         users = data.getUsers();
+                        //Buscar todos los usuarios del dispositivo
                         if (dispositivo.UsuarioBuscarTodos(false))
                         {
-                            BorrarUsuariosSinNombreReloj(); //ya no hay usuarios sin nombre en el reloj
                             lstUser = dispositivo.ListaUsuarios;
                         }
                         else
@@ -68,9 +69,8 @@ namespace HuellaDactilar
                             MessageBox.Show(dispositivo.ERROR);
                         }
 
-                        foreach (var item in users)
+                        foreach (var item in users) //recorrer lista de usuarios en BD
                         {
-
                             allHuellas = data.getHuellas(item.NumeroCredencial.ToString());
                             huellas = data.huellasSinEspacio(allHuellas);
 
@@ -111,8 +111,8 @@ namespace HuellaDactilar
                     this.Cursor = Cursors.Default;
                     j++;
                     dispositivo.DispositivoDesconectar();
-                    MessageBox.Show("OK");
                 }
+                MessageBox.Show("La sincronización ha sido exitosa");
             }
             catch (Exception ex)
             {
@@ -122,11 +122,14 @@ namespace HuellaDactilar
         private UsuarioInformacion buscarUsuarioReloj(int idPersona)
         {
             UsuarioInformacion u = null;
-            foreach (var item in lstUser)
+            if (lstUser != null)
             {
-                if (item.NumeroCredencial == idPersona)
+                foreach (var item in lstUser)
                 {
-                    u = item;
+                    if (item.NumeroCredencial == idPersona)
+                    {
+                        u = item;
+                    }
                 }
             }
             return u;
@@ -136,19 +139,6 @@ namespace HuellaDactilar
         private void grid_relojes_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
-        }
-
-        private void BorrarUsuariosSinNombreReloj()
-        {
-            List<UsuarioInformacion> Users = dispositivo.ListaUsuarios;
-            foreach (var item in Users)
-            {
-                if (item.Nombre == "" && item.Permiso == Permiso.UsuarioNormal)
-                {
-                    dispositivo.UsuarioBuscar(item.NumeroCredencial);
-                }
-
-            }
         }
 
         private void Button1_Click(object sender, EventArgs e)

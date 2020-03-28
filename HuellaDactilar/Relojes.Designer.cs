@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Relojes));
             this.grid_relojes = new System.Windows.Forms.DataGridView();
             this.btn_sincronizar = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.grid_relojes)).BeginInit();
             this.SuspendLayout();
             // 
@@ -45,7 +44,7 @@
             this.grid_relojes.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.grid_relojes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grid_relojes.Location = new System.Drawing.Point(56, 38);
-            this.grid_relojes.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.grid_relojes.Margin = new System.Windows.Forms.Padding(4);
             this.grid_relojes.Name = "grid_relojes";
             this.grid_relojes.ReadOnly = true;
             this.grid_relojes.RowHeadersWidth = 51;
@@ -56,24 +55,13 @@
             // btn_sincronizar
             // 
             this.btn_sincronizar.Location = new System.Drawing.Point(231, 231);
-            this.btn_sincronizar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btn_sincronizar.Margin = new System.Windows.Forms.Padding(4);
             this.btn_sincronizar.Name = "btn_sincronizar";
             this.btn_sincronizar.Size = new System.Drawing.Size(107, 28);
             this.btn_sincronizar.TabIndex = 2;
             this.btn_sincronizar.Text = "Sincronizar";
             this.btn_sincronizar.UseVisualStyleBackColor = true;
             this.btn_sincronizar.Click += new System.EventHandler(this.btn_sincronizar_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(384, 231);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(107, 28);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Poblar BD";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
             // Relojes
             // 
@@ -82,11 +70,10 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(592, 297);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.btn_sincronizar);
             this.Controls.Add(this.grid_relojes);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "Relojes";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -101,6 +88,5 @@
 
         private System.Windows.Forms.DataGridView grid_relojes;
         private System.Windows.Forms.Button btn_sincronizar;
-        private System.Windows.Forms.Button button1;
     }
 }

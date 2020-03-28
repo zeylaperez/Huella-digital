@@ -24,7 +24,7 @@ namespace HuellaDactilar
             flag = Flag;
             idPersona = ID;
         }
-      
+
 
         private void GestionarHuella_Load(object sender, EventArgs e)
         {
@@ -120,16 +120,15 @@ namespace HuellaDactilar
                 }
                 //permiso registrado
                 string perm = cls.getPermiso(numTargeta);
-                if (perm == "UsuarioNormal")
-                    radioButton1.Checked = true;
+                if (perm == "UsuarioAdministrador")
+                    radioButton3.Checked = true;
                 else
                 {
-                    if (perm == "UsuarioEnrolador") 
+                    if (perm == "UsuarioEnrolador")
                         radioButton2.Checked = true;
                     else
-                        radioButton3.Checked = true;
+                        radioButton1.Checked = true;
                 }
-
             }
             catch (NpgsqlException exc)
             {
@@ -163,7 +162,7 @@ namespace HuellaDactilar
                 if (result == DialogResult.Yes)
                 {
                     marcas[0] = string.Empty;
-                    if (clsConn.eliminarHuella(numTargeta,  unirHuellas(marcas)))
+                    if (clsConn.eliminarHuella(numTargeta, unirHuellas(marcas)))
                         cbox_D0.Checked = false;
                 }
                 else
@@ -481,6 +480,11 @@ namespace HuellaDactilar
         }
 
         private void Cbox_D0_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Cbox_D1_CheckedChanged(object sender, EventArgs e)
         {
 
         }

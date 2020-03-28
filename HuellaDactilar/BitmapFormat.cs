@@ -51,23 +51,23 @@ namespace HuellaDactilar
             int ColLoop = 0;
             int BmpBuflen = width * height;
 
-            try
+            //  try
+            // {
+            for (RowLoop = 0; RowLoop < BmpBuflen;)
             {
-                for (RowLoop = 0; RowLoop < BmpBuflen;)
+                for (ColLoop = 0; ColLoop < width; ColLoop++)
                 {
-                    for (ColLoop = 0; ColLoop < width; ColLoop++)
-                    {
-                        ResBuf[RowLoop + ColLoop] = BmpBuf[BmpBuflen - RowLoop - width + ColLoop];
-                    }
-
-                    RowLoop = RowLoop + width;
+                    ResBuf[RowLoop + ColLoop] = BmpBuf[BmpBuflen - RowLoop - width + ColLoop];
                 }
+
+                RowLoop = RowLoop + width;
             }
-            catch (Exception ex)
-            {
-                //ZKCE.SysException.ZKCELogger logger = new ZKCE.SysException.ZKCELogger(ex);
-                //logger.Append();
-            }
+            // }
+            /*  catch (Exception ex)
+              {
+                  //ZKCE.SysException.ZKCELogger logger = new ZKCE.SysException.ZKCELogger(ex);
+                  //logger.Append();
+              }*/
         }
 
         /*******************************************
@@ -83,42 +83,42 @@ namespace HuellaDactilar
             int StructSize = Marshal.SizeOf(StructObj);
             byte[] GetBytes = new byte[StructSize];
 
-            try
+            // try
+            // {
+            IntPtr StructPtr = Marshal.AllocHGlobal(StructSize);
+            Marshal.StructureToPtr(StructObj, StructPtr, false);
+            Marshal.Copy(StructPtr, GetBytes, 0, StructSize);
+            Marshal.FreeHGlobal(StructPtr);
+
+            if (Size == 14)
             {
-                IntPtr StructPtr = Marshal.AllocHGlobal(StructSize);
-                Marshal.StructureToPtr(StructObj, StructPtr, false);
-                Marshal.Copy(StructPtr, GetBytes, 0, StructSize);
-                Marshal.FreeHGlobal(StructPtr);
+                byte[] NewBytes = new byte[Size];
+                int Count = 0;
+                int Loop = 0;
 
-                if (Size == 14)
+                for (Loop = 0; Loop < StructSize; Loop++)
                 {
-                    byte[] NewBytes = new byte[Size];
-                    int Count = 0;
-                    int Loop = 0;
-
-                    for (Loop = 0; Loop < StructSize; Loop++)
+                    if (Loop != 2 && Loop != 3)
                     {
-                        if (Loop != 2 && Loop != 3)
-                        {
-                            NewBytes[Count] = GetBytes[Loop];
-                            Count++;
-                        }
+                        NewBytes[Count] = GetBytes[Loop];
+                        Count++;
                     }
+                }
 
-                    return NewBytes;
-                }
-                else
-                {
-                    return GetBytes;
-                }
+                return NewBytes;
             }
-            catch (Exception ex)
+            else
             {
-                //ZKCE.SysException.ZKCELogger logger = new ZKCE.SysException.ZKCELogger(ex);
-                //logger.Append();
-
                 return GetBytes;
             }
+            //   }
+            /* catch (Exception ex)
+             {
+                 //ZKCE.SysException.ZKCELogger logger = new ZKCE.SysException.ZKCELogger(ex);
+                 //logger.Append();
+
+                 return GetBytes;
+             }*/
         }
 
         /*******************************************
@@ -137,70 +137,70 @@ namespace HuellaDactilar
             int m_nColorTableEntries = 256;
             byte[] ResBuf = new byte[nWidth * nHeight * 2];
 
-            try
+            //  try
+            //  {
+            BITMAPFILEHEADER BmpHeader = new BITMAPFILEHEADER();
+            BITMAPINFOHEADER BmpInfoHeader = new BITMAPINFOHEADER();
+            MASK[] ColorMask = new MASK[m_nColorTableEntries];
+
+            int w = (((nWidth + 3) / 4) * 4);
+
+            //Í¼Æ¬Í·ÐÅÏ¢
+            BmpInfoHeader.biSize = Marshal.SizeOf(BmpInfoHeader);
+            BmpInfoHeader.biWidth = nWidth;
+            BmpInfoHeader.biHeight = nHeight;
+            BmpInfoHeader.biPlanes = 1;
+            BmpInfoHeader.biBitCount = m_nBitCount;
+            BmpInfoHeader.biCompression = 0;
+            BmpInfoHeader.biSizeImage = 0;
+            BmpInfoHeader.biXPelsPerMeter = 0;
+            BmpInfoHeader.biYPelsPerMeter = 0;
+            BmpInfoHeader.biClrUsed = m_nColorTableEntries;
+            BmpInfoHeader.biClrImportant = m_nColorTableEntries;
+
+            //ÎÄ¼þÍ·ÐÅÏ¢
+            BmpHeader.bfType = 0x4D42;
+            BmpHeader.bfOffBits = 14 + Marshal.SizeOf(BmpInfoHeader) + BmpInfoHeader.biClrUsed * 4;
+            BmpHeader.bfSize = BmpHeader.bfOffBits + ((((w * BmpInfoHeader.biBitCount + 31) / 32) * 4) * BmpInfoHeader.biHeight);
+            BmpHeader.bfReserved1 = 0;
+            BmpHeader.bfReserved2 = 0;
+
+            ms.Write(StructToBytes(BmpHeader, 14), 0, 14);
+            ms.Write(StructToBytes(BmpInfoHeader, Marshal.SizeOf(BmpInfoHeader)), 0, Marshal.SizeOf(BmpInfoHeader));
+
+            //µ÷ÊÔ°åÐÅÏ¢
+            for (ColorIndex = 0; ColorIndex < m_nColorTableEntries; ColorIndex++)
             {
-                BITMAPFILEHEADER BmpHeader = new BITMAPFILEHEADER();
-                BITMAPINFOHEADER BmpInfoHeader = new BITMAPINFOHEADER();
-                MASK[] ColorMask = new MASK[m_nColorTableEntries];
+                ColorMask[ColorIndex].redmask = (byte)ColorIndex;
+                ColorMask[ColorIndex].greenmask = (byte)ColorIndex;
+                ColorMask[ColorIndex].bluemask = (byte)ColorIndex;
+                ColorMask[ColorIndex].rgbReserved = 0;
 
-                int w = (((nWidth + 3) / 4) * 4);
+                ms.Write(StructToBytes(ColorMask[ColorIndex], Marshal.SizeOf(ColorMask[ColorIndex])), 0, Marshal.SizeOf(ColorMask[ColorIndex]));
+            }
 
-                //Í¼Æ¬Í·ÐÅÏ¢
-                BmpInfoHeader.biSize = Marshal.SizeOf(BmpInfoHeader);
-                BmpInfoHeader.biWidth = nWidth;
-                BmpInfoHeader.biHeight = nHeight;
-                BmpInfoHeader.biPlanes = 1;
-                BmpInfoHeader.biBitCount = m_nBitCount;
-                BmpInfoHeader.biCompression = 0;
-                BmpInfoHeader.biSizeImage = 0;
-                BmpInfoHeader.biXPelsPerMeter = 0;
-                BmpInfoHeader.biYPelsPerMeter = 0;
-                BmpInfoHeader.biClrUsed = m_nColorTableEntries;
-                BmpInfoHeader.biClrImportant = m_nColorTableEntries;
+            //Í¼Æ¬Ðý×ª£¬½â¾öÖ¸ÎÆÍ¼Æ¬µ¹Á¢µÄÎÊÌâ
+            RotatePic(buffer, nWidth, nHeight, ref ResBuf);
 
-                //ÎÄ¼þÍ·ÐÅÏ¢
-                BmpHeader.bfType = 0x4D42;
-                BmpHeader.bfOffBits = 14 + Marshal.SizeOf(BmpInfoHeader) + BmpInfoHeader.biClrUsed * 4;
-                BmpHeader.bfSize = BmpHeader.bfOffBits + ((((w * BmpInfoHeader.biBitCount + 31) / 32) * 4) * BmpInfoHeader.biHeight);
-                BmpHeader.bfReserved1 = 0;
-                BmpHeader.bfReserved2 = 0;
-
-                ms.Write(StructToBytes(BmpHeader, 14), 0, 14);
-                ms.Write(StructToBytes(BmpInfoHeader, Marshal.SizeOf(BmpInfoHeader)), 0, Marshal.SizeOf(BmpInfoHeader));
-
-                //µ÷ÊÔ°åÐÅÏ¢
-                for (ColorIndex = 0; ColorIndex < m_nColorTableEntries; ColorIndex++)
-                {
-                    ColorMask[ColorIndex].redmask = (byte)ColorIndex;
-                    ColorMask[ColorIndex].greenmask = (byte)ColorIndex;
-                    ColorMask[ColorIndex].bluemask = (byte)ColorIndex;
-                    ColorMask[ColorIndex].rgbReserved = 0;
-
-                    ms.Write(StructToBytes(ColorMask[ColorIndex], Marshal.SizeOf(ColorMask[ColorIndex])), 0, Marshal.SizeOf(ColorMask[ColorIndex]));
-                }
-
-                //Í¼Æ¬Ðý×ª£¬½â¾öÖ¸ÎÆÍ¼Æ¬µ¹Á¢µÄÎÊÌâ
-                RotatePic(buffer, nWidth, nHeight, ref ResBuf);
-
-                byte[] filter = null;
+            byte[] filter = null;
+            if (w - nWidth > 0)
+            {
+                filter = new byte[w - nWidth];
+            }
+            for (int i = 0; i < nHeight; i++)
+            {
+                ms.Write(ResBuf, i * nWidth, nWidth);
                 if (w - nWidth > 0)
                 {
-                    filter = new byte[w - nWidth];
-                }
-                for (int i = 0; i < nHeight; i++)
-                {
-                    ms.Write(ResBuf, i * nWidth, nWidth);
-                    if (w - nWidth > 0)
-                    {
-                        ms.Write(ResBuf, 0, w - nWidth);
-                    }
+                    ms.Write(ResBuf, 0, w - nWidth);
                 }
             }
-            catch (Exception ex)
-            {
-                // ZKCE.SysException.ZKCELogger logger = new ZKCE.SysException.ZKCELogger(ex);
-                // logger.Append();
-            }
+            /*  }
+              catch (Exception ex)
+              {
+                  // ZKCE.SysException.ZKCELogger logger = new ZKCE.SysException.ZKCELogger(ex);
+                  // logger.Append();
+              }*/
         }
 
         /*******************************************
@@ -219,8 +219,8 @@ namespace HuellaDactilar
             int m_nColorTableEntries = 256;
             byte[] ResBuf = new byte[nWidth * nHeight];
 
-            try
-            {
+         //   try
+          //  {
 
                 BITMAPFILEHEADER BmpHeader = new BITMAPFILEHEADER();
                 BITMAPINFOHEADER BmpInfoHeader = new BITMAPINFOHEADER();
@@ -284,12 +284,12 @@ namespace HuellaDactilar
 
                 FileStream.Close();
                 TmpBinaryWriter.Close();
-            }
+           /* }
             catch (Exception ex)
             {
                 //ZKCE.SysException.ZKCELogger logger = new ZKCE.SysException.ZKCELogger(ex);
                 //logger.Append();
-            }
+            }*/
         }
     }
 }
