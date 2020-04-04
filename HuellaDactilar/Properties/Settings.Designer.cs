@@ -12,7 +12,7 @@ namespace HuellaDactilar.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.2.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -26,7 +26,7 @@ namespace HuellaDactilar.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Host=localhost;Database=asistencia;Username=postgres;Password=postgres;Persist Se" +
+        [global::System.Configuration.DefaultSettingValueAttribute("Host=192.168.2.13;Database=asistencia;Username=postgres;Password=*cmi*;Persist Se" +
             "curity Info=True")]
         public string asistenciaConnectionString {
             get {
@@ -37,8 +37,8 @@ namespace HuellaDactilar.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Password=postgres;Persist Security Info=True;Username=postgres;Database=grehu_eti" +
-            ";Host=localhost")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Password=*cmi*;Persist Security Info=True;Username=postgres;Database=grehu_eti;Ho" +
+            "st=192.168.2.13")]
         public string grehu_etiConnectionString {
             get {
                 return ((string)(this["grehu_etiConnectionString"]));

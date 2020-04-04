@@ -47,33 +47,38 @@ namespace HuellaDactilar
             clsData data = new clsData();
             List<UserInfo> userInfos = new List<UserInfo>();
             List<UsuarioInformacion> users = new List<UsuarioInformacion>();
+
+            //Actualiza eti_huella segun el estado de los trabajadores en la tabla personal
+            data.UpdateEstadoPersonal();
+            //Obtener los usuarios en eti_huella
+            users = data.getUsers();
             int j = 0;
+
             try
             {
                 this.Cursor = Cursors.WaitCursor;
                 while (relojes[j, 0] != null)
                 {
                     if (!dispositivo.DispositivoConectar(relojes[j, 0], 1, false))
-                        MessageBox.Show("Error al conectarse al reloj "+ relojes[j, 0], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Error al conectarse al reloj " + relojes[j, 0], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     else
                     {
-                        //usuarios en la BD
-                        users = data.getUsers();
                         //Buscar todos los usuarios del dispositivo
                         if (dispositivo.UsuarioBuscarTodos(false))
                         {
                             lstUser = dispositivo.ListaUsuarios;
                         }
-                        else
-                        {
-                            MessageBox.Show(dispositivo.ERROR);
-                        }
+                        /*  else
+                          {
+                              MessageBox.Show(dispositivo.ERROR);
+                          }*/
 
                         foreach (var item in users) //recorrer lista de usuarios en BD
                         {
                             allHuellas = data.getHuellas(item.NumeroCredencial.ToString());
                             huellas = data.huellasSinEspacio(allHuellas);
 
+                            //agregar huellas a usuarios que estan en el reloj
                             if (buscarUsuarioReloj(int.Parse(item.NumeroCredencial.ToString())) != null)
                             {
                                 UsuarioInformacion usuario = buscarUsuarioReloj(int.Parse(item.NumeroCredencial.ToString()));
@@ -96,14 +101,22 @@ namespace HuellaDactilar
                                         uh.IndexHuella = marcas.Key;
                                         huellaslist.Add(uh);
                                     }
-
                                 }
                             }
                             else
                             {
-                                foreach (var h in huellas)
+                                //insertar usuarios sin huellas en el reloj
+                                if (huellas.Count == 0)
                                 {
-                                    dispositivo.UsuarioAgregar(Int16.Parse(item.NumeroCredencial.ToString()), item.Nombre, item.Permiso, h.Key, h.Value);
+                                    dispositivo.UsuarioAgregar(Int32.Parse(item.NumeroCredencial.ToString()), item.Nombre, item.Permiso, 0, "");
+                                }
+                                else
+                                {
+                                    //insertar usuarios nuevos en el reloj
+                                    foreach (var h in huellas)
+                                    {
+                                        dispositivo.UsuarioAgregar(Int32.Parse(item.NumeroCredencial.ToString()), item.Nombre, item.Permiso, h.Key, h.Value);
+                                    }
                                 }
                             }
                         }
@@ -112,14 +125,14 @@ namespace HuellaDactilar
                     j++;
                     dispositivo.DispositivoDesconectar();
                 }
-                MessageBox.Show("La sincronización ha sido exitosa");
+                    MessageBox.Show("Proceso terminado");
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
             }
         }
-        private UsuarioInformacion buscarUsuarioReloj(int idPersona)
+        public UsuarioInformacion buscarUsuarioReloj(int idPersona)
         {
             UsuarioInformacion u = null;
             if (lstUser != null)
@@ -135,6 +148,17 @@ namespace HuellaDactilar
             return u;
         }
 
+
+        public void EliminarUsuariosReloj(List<UsuarioInformacion> lista)
+        {
+            if (lista != null)
+            {
+                foreach (var item in lista)
+                {
+                    dispositivo.UsuarioBorrar(item.NumeroCredencial);
+                }
+            }
+        }
 
         private void grid_relojes_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {

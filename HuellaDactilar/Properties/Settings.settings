@@ -5,18 +5,18 @@
     <Setting Name="asistenciaConnectionString" Type="(Connection string)" Scope="Application">
       <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;Host=localhost;Database=asistencia;Username=postgres;Password=postgres;Persist Security Info=True&lt;/ConnectionString&gt;
+  &lt;ConnectionString&gt;Host=192.168.2.13;Database=asistencia;Username=postgres;Password=*cmi*;Persist Security Info=True&lt;/ConnectionString&gt;
   &lt;ProviderName&gt;Npgsql&lt;/ProviderName&gt;
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Host=localhost;Database=asistencia;Username=postgres;Password=postgres;Persist Security Info=True</Value>
+      <Value Profile="(Default)">Host=192.168.2.13;Database=asistencia;Username=postgres;Password=*cmi*;Persist Security Info=True</Value>
     </Setting>
     <Setting Name="grehu_etiConnectionString" Type="(Connection string)" Scope="Application">
       <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;Password=postgres;Persist Security Info=True;Username=postgres;Database=grehu_eti;Host=localhost&lt;/ConnectionString&gt;
+  &lt;ConnectionString&gt;Password=*cmi*;Persist Security Info=True;Username=postgres;Database=grehu_eti;Host=192.168.2.13&lt;/ConnectionString&gt;
   &lt;ProviderName&gt;Npgsql&lt;/ProviderName&gt;
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Password=postgres;Persist Security Info=True;Username=postgres;Database=grehu_eti;Host=localhost</Value>
+      <Value Profile="(Default)">Password=*cmi*;Persist Security Info=True;Username=postgres;Database=grehu_eti;Host=192.168.2.13</Value>
     </Setting>
   </Settings>
 </SettingsFile>

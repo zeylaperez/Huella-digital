@@ -93,8 +93,9 @@
     <OutputPath>bin\x86\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="libzkfpcsharp">
-      <HintPath>C:\Users\Zeyla\Downloads\Compressed\ZKFingerSDK 5.3_ZK10.0\ZKFingerSDK 5.3_Windows_ZK10.0\C#\Demo\libzkfpcsharp.dll</HintPath>
+    <Reference Include="libzkfpcsharp, Version=1.0.0.1, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>package\libzkfpcsharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -144,10 +145,6 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsFormsIntegration" />
-    <Reference Include="ZKEUEmKeeperNet">
-      <HintPath>package\ZKEUEmKeeperNet.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="ZKSoftwareAPI">
       <HintPath>package\ZKSoftwareAPI.dll</HintPath>
     </Reference>
@@ -159,15 +156,9 @@
     <Compile Include="AddHuella.Designer.cs">
       <DependentUpon>AddHuella.cs</DependentUpon>
     </Compile>
-    <Compile Include="asistenciaDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>asistenciaDataSet.xsd</DependentUpon>
-    </Compile>
     <Compile Include="BitmapFormat.cs" />
     <Compile Include="Controller\clsData.cs" />
     <Compile Include="Controller\clsConn.cs" />
-    <Compile Include="Controller\Trabajador.cs" />
     <Compile Include="Controller\UniversalStatic.cs" />
     <Compile Include="Enums\ClearFlags.cs" />
     <Compile Include="GestionarHuella.cs">
@@ -229,7 +220,6 @@
     </None>
     <None Include="asistenciaDataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>asistenciaDataSet.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
     <None Include="asistenciaDataSet.xss">

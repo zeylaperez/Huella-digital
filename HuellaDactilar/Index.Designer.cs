@@ -47,7 +47,7 @@
             this.pnl_auth.Controls.Add(this.lbl_pass);
             this.pnl_auth.Controls.Add(this.lbl_usuario);
             this.pnl_auth.Location = new System.Drawing.Point(108, 316);
-            this.pnl_auth.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnl_auth.Margin = new System.Windows.Forms.Padding(4);
             this.pnl_auth.Name = "pnl_auth";
             this.pnl_auth.Size = new System.Drawing.Size(323, 151);
             this.pnl_auth.TabIndex = 7;
@@ -56,7 +56,7 @@
             // 
             this.txt_usuario.AccessibleDescription = "";
             this.txt_usuario.Location = new System.Drawing.Point(111, 21);
-            this.txt_usuario.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txt_usuario.Margin = new System.Windows.Forms.Padding(4);
             this.txt_usuario.Name = "txt_usuario";
             this.txt_usuario.Size = new System.Drawing.Size(184, 22);
             this.txt_usuario.TabIndex = 1;
@@ -67,7 +67,7 @@
             // btn_acceder
             // 
             this.btn_acceder.Location = new System.Drawing.Point(196, 114);
-            this.btn_acceder.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btn_acceder.Margin = new System.Windows.Forms.Padding(4);
             this.btn_acceder.Name = "btn_acceder";
             this.btn_acceder.Size = new System.Drawing.Size(100, 28);
             this.btn_acceder.TabIndex = 5;
@@ -79,7 +79,7 @@
             // 
             this.txt_pass.AccessibleDescription = "";
             this.txt_pass.Location = new System.Drawing.Point(111, 68);
-            this.txt_pass.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txt_pass.Margin = new System.Windows.Forms.Padding(4);
             this.txt_pass.Name = "txt_pass";
             this.txt_pass.Size = new System.Drawing.Size(184, 22);
             this.txt_pass.TabIndex = 3;
@@ -124,13 +124,14 @@
             this.Controls.Add(this.pnl_auth);
             this.ForeColor = System.Drawing.Color.Black;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "Index";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sistema de Control de Huellas Digitales";
             this.TransparencyKey = System.Drawing.Color.Red;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Index_FormClosing);
+            this.Load += new System.EventHandler(this.Index_Load);
             this.pnl_auth.ResumeLayout(false);
             this.pnl_auth.PerformLayout();
             this.ResumeLayout(false);

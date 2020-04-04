@@ -85,5 +85,10 @@ namespace HuellaDactilar
         {
 
         }
+
+        private void Index_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

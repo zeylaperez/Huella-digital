@@ -1,5 +1,6 @@
 ﻿using Npgsql;
 using System;
+using System.Configuration;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using ZKSoftwareAPI;
@@ -8,12 +9,9 @@ namespace HuellaDactilar.Controller
 {
     class clsData
     {
-        //Conexion global
-        private string conn = "Server=192.168.2.13;User Id=postgres;" +
-        "Password=*cmi*;Database=grehu_eti;";
+        //Conexion a traves de app.config
+        string conn = ConfigurationManager.ConnectionStrings["HuellaDactilar.Properties.Settings.grehu_etiConnectionString"].ConnectionString;
 
-       /* private string conn = "Server=localhost;User Id=postgres;" +
-                                    "Password=postgres;Database=grehu_eti;";*/
         public bool insertData(Int64 idPersona, string numTargeta, string huellas, string nombre, string apellidos, string permiso)
         {
             Int64 cantDatos = 0;
@@ -102,6 +100,27 @@ namespace HuellaDactilar.Controller
                 NpgsqlCommand updCommand = new NpgsqlCommand(upd, update);
                 updCommand.Parameters.AddWithValue("@huellas", huellas);
                 updCommand.Parameters.AddWithValue("@num_targ", num_tarjeta);
+                NpgsqlDataReader reader = updCommand.ExecuteReader();
+                update.Close();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public bool UpdateEstadoPersonal()//Actualiza en eti_huellas segun el estado en la tabla personal
+        {
+            try
+            {
+                NpgsqlConnection update = new NpgsqlConnection(conn);
+                update.Open();
+                string upd = "UPDATE eti_huella SET activo=true FROM personal WHERE personal.num_tarjeta=eti_huella.num_tarjeta AND personal.baja=false;"+
+                   "UPDATE eti_huella SET activo=false FROM personal WHERE personal.num_tarjeta=eti_huella.num_tarjeta AND personal.baja=true;" ;
+                NpgsqlCommand updCommand = new NpgsqlCommand(upd, update);
+                //updCommand.Parameters.AddWithValue("@huellas", true);
+               // updCommand.Parameters.AddWithValue("@num_targ", num_tarjeta);
                 NpgsqlDataReader reader = updCommand.ExecuteReader();
                 update.Close();
                 return true;
