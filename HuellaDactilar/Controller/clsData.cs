@@ -116,11 +116,11 @@ namespace HuellaDactilar.Controller
             {
                 NpgsqlConnection update = new NpgsqlConnection(conn);
                 update.Open();
-                string upd = "UPDATE eti_huella SET activo=true FROM personal WHERE personal.num_tarjeta=eti_huella.num_tarjeta AND personal.baja=false;"+
-                   "UPDATE eti_huella SET activo=false FROM personal WHERE personal.num_tarjeta=eti_huella.num_tarjeta AND personal.baja=true;" ;
+                string upd = "UPDATE eti_huella SET activo=true FROM personal WHERE personal.num_tarjeta=eti_huella.num_tarjeta AND personal.baja=false;" +
+                   "UPDATE eti_huella SET activo=false FROM personal WHERE personal.num_tarjeta=eti_huella.num_tarjeta AND personal.baja=true;";
                 NpgsqlCommand updCommand = new NpgsqlCommand(upd, update);
                 //updCommand.Parameters.AddWithValue("@huellas", true);
-               // updCommand.Parameters.AddWithValue("@num_targ", num_tarjeta);
+                // updCommand.Parameters.AddWithValue("@num_targ", num_tarjeta);
                 NpgsqlDataReader reader = updCommand.ExecuteReader();
                 update.Close();
                 return true;
@@ -247,6 +247,34 @@ namespace HuellaDactilar.Controller
                 return null;
             }
         }
+
+        public List<UsuarioInformacion> getUsersInPersonal()
+        {
+            List<UsuarioInformacion> users = new List<UsuarioInformacion>();
+            try
+            {
+                NpgsqlConnection user = new NpgsqlConnection(conn);
+                string selectUser = "SELECT pe.num_tarjeta,pe.nombre,pe.apellidos FROM personal pe WHERE pe.baja = @activo";
+                NpgsqlCommand command = new NpgsqlCommand(selectUser, user);
+                user.Open();
+                command.Parameters.AddWithValue("@activo", false);
+                NpgsqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    UsuarioInformacion u = new UsuarioInformacion();
+                    u.Nombre = reader[1].ToString() + " " + reader[2].ToString();
+                    u.NumeroCredencial = Int32.Parse(reader[0].ToString());
+                    u.Permiso = Permiso.UsuarioNormal;
+                    users.Add(u);
+                }
+                return users;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         public Dictionary<int, string> huellasSinEspacio(string[] huellas)
         {
             Dictionary<int, string> dicc = new Dictionary<int, string>();

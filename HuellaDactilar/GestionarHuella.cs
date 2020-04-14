@@ -488,6 +488,11 @@ namespace HuellaDactilar
         {
 
         }
+
+        private void Cbox_D5_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 
 }

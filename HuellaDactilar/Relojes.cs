@@ -14,9 +14,12 @@ namespace HuellaDactilar
         List<UsuarioInformacion> lstUser = new List<UsuarioInformacion>();
         private string[,] relojes;
         public ClearFlag clear;
+        clsData data = new clsData();
+        int progreso=0;
         public Relojes()
         {
             InitializeComponent();
+            progressBar1.Value = 0;
         }
 
         ZKSoftware dispositivo = new ZKSoftware(Modelo.X628C);
@@ -35,6 +38,7 @@ namespace HuellaDactilar
                 table.Rows.Add(relojes[i, 0], relojes[i, 1]);
                 i++;
             }
+            progreso = 80/i;
             grid_relojes.DataSource = table;
             grid_relojes.Refresh();
             this.Cursor = Cursors.Default;
@@ -42,9 +46,11 @@ namespace HuellaDactilar
 
         private void btn_sincronizar_Click(object sender, EventArgs e)
         {
+            progressBar1.Visible = true;
+            progressBar1.Value = 20;
+
             string[] allHuellas = new string[10];
             Dictionary<int, string> huellas = new Dictionary<int, string>();
-            clsData data = new clsData();
             List<UserInfo> userInfos = new List<UserInfo>();
             List<UsuarioInformacion> users = new List<UsuarioInformacion>();
 
@@ -68,10 +74,9 @@ namespace HuellaDactilar
                         {
                             lstUser = dispositivo.ListaUsuarios;
                         }
-                        /*  else
-                          {
-                              MessageBox.Show(dispositivo.ERROR);
-                          }*/
+
+                        //eliminar los churres del reloj
+                        EliminarUsuariosReloj(lstUser);
 
                         foreach (var item in users) //recorrer lista de usuarios en BD
                         {
@@ -122,10 +127,13 @@ namespace HuellaDactilar
                         }
                     }
                     this.Cursor = Cursors.Default;
+                    progressBar1.Value += progreso;
                     j++;
                     dispositivo.DispositivoDesconectar();
                 }
-                    MessageBox.Show("Proceso terminado");
+                if (progressBar1.Value > 100)
+                    progressBar1.Value = 100;
+             //   MessageBox.Show("Proceso terminado");
             }
             catch (Exception ex)
             {
@@ -151,11 +159,19 @@ namespace HuellaDactilar
 
         public void EliminarUsuariosReloj(List<UsuarioInformacion> lista)
         {
+            List<UsuarioInformacion> listapersonal = data.getUsersInPersonal();
             if (lista != null)
             {
                 foreach (var item in lista)
                 {
-                    dispositivo.UsuarioBorrar(item.NumeroCredencial);
+                    bool enc = false;
+                    foreach (var l in listapersonal)
+                    {
+                        if (item.NumeroCredencial == l.NumeroCredencial)
+                            enc = true;
+                    }
+                    if (!enc)
+                        dispositivo.UsuarioBorrar(item.NumeroCredencial);
                 }
             }
         }
@@ -167,6 +183,20 @@ namespace HuellaDactilar
 
         private void Button1_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void ProgressBar1_Click(object sender, EventArgs e)
+        {
+          
+        }
+
+        private void Button1_Click_1(object sender, EventArgs e)
+        {
+            progressBar1.Visible = true;
+            progressBar1.Value = 20;
+            MessageBox.Show("OK"); 
+            progressBar1.Value = 100;
 
         }
     }

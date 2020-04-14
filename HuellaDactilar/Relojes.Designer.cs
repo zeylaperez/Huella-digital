@@ -31,7 +31,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Relojes));
             this.grid_relojes = new System.Windows.Forms.DataGridView();
             this.btn_sincronizar = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
             ((System.ComponentModel.ISupportInitialize)(this.grid_relojes)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.SuspendLayout();
             // 
             // grid_relojes
@@ -54,7 +57,7 @@
             // 
             // btn_sincronizar
             // 
-            this.btn_sincronizar.Location = new System.Drawing.Point(231, 231);
+            this.btn_sincronizar.Location = new System.Drawing.Point(231, 256);
             this.btn_sincronizar.Margin = new System.Windows.Forms.Padding(4);
             this.btn_sincronizar.Name = "btn_sincronizar";
             this.btn_sincronizar.Size = new System.Drawing.Size(107, 28);
@@ -63,6 +66,20 @@
             this.btn_sincronizar.UseVisualStyleBackColor = true;
             this.btn_sincronizar.Click += new System.EventHandler(this.btn_sincronizar_Click);
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(84, 217);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(407, 17);
+            this.progressBar1.TabIndex = 3;
+            this.progressBar1.Visible = false;
+            this.progressBar1.Click += new System.EventHandler(this.ProgressBar1_Click);
+            // 
+            // fileSystemWatcher1
+            // 
+            this.fileSystemWatcher1.EnableRaisingEvents = true;
+            this.fileSystemWatcher1.SynchronizingObject = this;
+            // 
             // Relojes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -70,6 +87,7 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(592, 297);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.btn_sincronizar);
             this.Controls.Add(this.grid_relojes);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -80,6 +98,7 @@
             this.Text = "Relojes";
             this.Load += new System.EventHandler(this.Relojes_Load);
             ((System.ComponentModel.ISupportInitialize)(this.grid_relojes)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -88,5 +107,7 @@
 
         private System.Windows.Forms.DataGridView grid_relojes;
         private System.Windows.Forms.Button btn_sincronizar;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.IO.FileSystemWatcher fileSystemWatcher1;
     }
 }

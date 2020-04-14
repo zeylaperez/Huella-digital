@@ -90,5 +90,21 @@ namespace HuellaDactilar
         {
 
         }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ToolStripButton1_Click(object sender, EventArgs e)
+        {
+            ConfigurarBD configurarBD = new ConfigurarBD();
+            configurarBD.Show();
+        }
+
+        private void ToolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
     }
 }

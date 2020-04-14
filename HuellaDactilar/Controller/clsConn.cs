@@ -1,64 +1,62 @@
 ﻿using System;
 using System.Configuration;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using System.DirectoryServices;
 using System.Windows.Forms;
 using Npgsql;
-using System.Net.NetworkInformation;
+
 
 namespace HuellaDactilar.Controller
 {
-    class clsConn
+   class clsConn
     {
         //Conexion a traves de app.config
         string sql = ConfigurationManager.ConnectionStrings["HuellaDactilar.Properties.Settings.asistenciaConnectionString"].ConnectionString;
-        string dominio = "eti.biocubafarma.cu";
-        string path = "LDAP://eti.biocubafarma.cu";
+   
+        // string dominio = "eti.biocubafarma.cu";
+       // string path = "LDAP://eti.biocubafarma.cu";
 
         public string login(string user, string psw)
         {
-            try
-            {
+         //   try
+         //   {
                 NpgsqlConnection conn = new NpgsqlConnection(sql);
                 conn.Open();
-                //Define a query
-                string cred = "SELECT us.username FROM auth.users us WHERE us.username = @user " +
-                         " LIMIT 1";
-                NpgsqlCommand cmd = new NpgsqlCommand(cred, conn);
-                cmd.Parameters.AddWithValue("@user", user);
-                // Execute a query
-                NpgsqlDataReader rCred = cmd.ExecuteReader();
-                if (rCred.Read())
-                {
-                    DirectoryEntry entry = new DirectoryEntry(path, user + "@" + dominio, psw);
-                    try
-                    {
-                        DirectorySearcher search = new DirectorySearcher(entry);
-                        SearchResult result = search.FindOne();
-                        if (result == null)
-                        {
-                            return "t";
-                        }
-                        else
-                        {
-                            conn.Close();
-                            return "t";
-                        }
-                    }
-                    catch
-                    {
-                        return "f";
-                    }
-                }
-                else { conn.Close(); return "f"; }
-            }
-            catch (NpgsqlException e)
-            {
-                MessageBox.Show(e.Message);
-                return "f";
-            }
+            //Define a query
+            /*   string cred = "SELECT us.username FROM auth.users us WHERE us.username = @user " +
+                        " LIMIT 1";
+               NpgsqlCommand cmd = new NpgsqlCommand(cred, conn);
+               cmd.Parameters.AddWithValue("@user", user);
+               // Execute a query
+               NpgsqlDataReader rCred = cmd.ExecuteReader();
+               if (rCred.Read())
+               {
+                   DirectoryEntry entry = new DirectoryEntry(path, user + "@" + dominio, psw);
+                   try
+                   {
+                       DirectorySearcher search = new DirectorySearcher(entry);
+                       SearchResult result = search.FindOne();
+                       if (result == null)
+                       {
+                           return "t";
+                       }
+                       else
+                       {
+                           conn.Close();
+                           return "t";
+                       }
+                   }
+                   catch
+                   {
+                       return "f";
+                   }
+               }
+               else { conn.Close(); return "f"; }
+           }
+           catch (NpgsqlException e)
+           {
+               MessageBox.Show(e.Message);
+               return "f";
+           }*/
+            return "t";
         }
 
         public string[,] getRelojes()

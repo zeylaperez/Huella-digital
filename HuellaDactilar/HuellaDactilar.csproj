@@ -157,8 +157,15 @@
       <DependentUpon>AddHuella.cs</DependentUpon>
     </Compile>
     <Compile Include="BitmapFormat.cs" />
+    <Compile Include="ConfigurarBD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfigurarBD.Designer.cs">
+      <DependentUpon>ConfigurarBD.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controller\clsData.cs" />
     <Compile Include="Controller\clsConn.cs" />
+    <Compile Include="Controller\ConnectionStringsManager.cs" />
     <Compile Include="Controller\UniversalStatic.cs" />
     <Compile Include="Enums\ClearFlags.cs" />
     <Compile Include="GestionarHuella.cs">
@@ -195,6 +202,9 @@
     </Compile>
     <EmbeddedResource Include="AddHuella.resx">
       <DependentUpon>AddHuella.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurarBD.resx">
+      <DependentUpon>ConfigurarBD.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GestionarHuella.resx">
       <DependentUpon>GestionarHuella.cs</DependentUpon>

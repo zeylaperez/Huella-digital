@@ -33,7 +33,11 @@
             this.txt_Buscar = new System.Windows.Forms.TextBox();
             this.grid_personas = new System.Windows.Forms.DataGridView();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.numtarjetaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.apellidos = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.personalBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.grehu_etiDataSet = new HuellaDactilar.grehu_etiDataSet();
             this.cbox_D0 = new System.Windows.Forms.CheckBox();
             this.cbox_D1 = new System.Windows.Forms.CheckBox();
             this.cbox_D2 = new System.Windows.Forms.CheckBox();
@@ -57,18 +61,14 @@
             this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.numtarjetaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.personalBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.grehu_etiDataSet = new HuellaDactilar.grehu_etiDataSet();
             this.personalTableAdapter = new HuellaDactilar.grehu_etiDataSetTableAdapters.personalTableAdapter();
             ((System.ComponentModel.ISupportInitialize)(this.grid_personas)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.personalBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grehu_etiDataSet)).BeginInit();
             this.gbox_Dedos.SuspendLayout();
             this.menuPrincipal.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.img_manos)).BeginInit();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.personalBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.grehu_etiDataSet)).BeginInit();
             this.SuspendLayout();
             // 
             // txt_Buscar
@@ -121,6 +121,22 @@
             this.id.ReadOnly = true;
             this.id.Visible = false;
             // 
+            // numtarjetaDataGridViewTextBoxColumn
+            // 
+            this.numtarjetaDataGridViewTextBoxColumn.DataPropertyName = "num_tarjeta";
+            this.numtarjetaDataGridViewTextBoxColumn.HeaderText = "num_tarjeta";
+            this.numtarjetaDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.numtarjetaDataGridViewTextBoxColumn.Name = "numtarjetaDataGridViewTextBoxColumn";
+            this.numtarjetaDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "nombre";
+            this.dataGridViewTextBoxColumn1.HeaderText = "nombre";
+            this.dataGridViewTextBoxColumn1.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
             // apellidos
             // 
             this.apellidos.DataPropertyName = "apellidos";
@@ -128,6 +144,17 @@
             this.apellidos.MinimumWidth = 6;
             this.apellidos.Name = "apellidos";
             this.apellidos.ReadOnly = true;
+            // 
+            // personalBindingSource
+            // 
+            this.personalBindingSource.DataMember = "personal";
+            this.personalBindingSource.DataSource = this.grehu_etiDataSet;
+            this.personalBindingSource.CurrentChanged += new System.EventHandler(this.personalBindingSource_CurrentChanged);
+            // 
+            // grehu_etiDataSet
+            // 
+            this.grehu_etiDataSet.DataSetName = "grehu_etiDataSet";
+            this.grehu_etiDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // cbox_D0
             // 
@@ -201,6 +228,7 @@
             this.cbox_D5.TabIndex = 8;
             this.cbox_D5.Text = "Dedo 5";
             this.cbox_D5.UseVisualStyleBackColor = true;
+            this.cbox_D5.CheckedChanged += new System.EventHandler(this.Cbox_D5_CheckedChanged);
             this.cbox_D5.Click += new System.EventHandler(this.cbox_D5_Click);
             // 
             // cbox_D6
@@ -413,33 +441,6 @@
             this.radioButton1.UseVisualStyleBackColor = true;
             this.radioButton1.CheckedChanged += new System.EventHandler(this.RadioButton1_CheckedChanged);
             // 
-            // numtarjetaDataGridViewTextBoxColumn
-            // 
-            this.numtarjetaDataGridViewTextBoxColumn.DataPropertyName = "num_tarjeta";
-            this.numtarjetaDataGridViewTextBoxColumn.HeaderText = "num_tarjeta";
-            this.numtarjetaDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.numtarjetaDataGridViewTextBoxColumn.Name = "numtarjetaDataGridViewTextBoxColumn";
-            this.numtarjetaDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.DataPropertyName = "nombre";
-            this.dataGridViewTextBoxColumn1.HeaderText = "nombre";
-            this.dataGridViewTextBoxColumn1.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // personalBindingSource
-            // 
-            this.personalBindingSource.DataMember = "personal";
-            this.personalBindingSource.DataSource = this.grehu_etiDataSet;
-            this.personalBindingSource.CurrentChanged += new System.EventHandler(this.personalBindingSource_CurrentChanged);
-            // 
-            // grehu_etiDataSet
-            // 
-            this.grehu_etiDataSet.DataSetName = "grehu_etiDataSet";
-            this.grehu_etiDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
             // personalTableAdapter
             // 
             this.personalTableAdapter.ClearBeforeFill = true;
@@ -472,6 +473,8 @@
             this.Load += new System.EventHandler(this.GestionarHuella_Load);
             this.Shown += new System.EventHandler(this.GestionarHuella_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.grid_personas)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.personalBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grehu_etiDataSet)).EndInit();
             this.gbox_Dedos.ResumeLayout(false);
             this.gbox_Dedos.PerformLayout();
             this.menuPrincipal.ResumeLayout(false);
@@ -479,8 +482,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.img_manos)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.personalBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.grehu_etiDataSet)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
